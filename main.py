@@ -10,6 +10,8 @@ import pyexiv2
 from config import dcim_dir, pictures_dir, pictures_dir2
 
 if __name__ == "__main__":
+    # XXX 「RuntimeError: Directory Canon with 13312 entries considered invalid; not read.」エラーを抑制
+    pyexiv2.set_log_level(4)
     latest_timestamp = sorted(
         [
             datetime.datetime.fromtimestamp(os.path.getctime(f"{pictures_dir}/{file}"))
@@ -22,20 +24,15 @@ if __name__ == "__main__":
             os.path.getctime(f"{pictures_dir}/{file}")
         )
         if latest_timestamp - timestamp < datetime.timedelta(hours=1):
-            try:
-                with pyexiv2.Image(f"{pictures_dir}/{file}", encoding="CP932") as img:
-                    latest_date_time = max(
-                        latest_date_time, img.read_exif().get("Exif.Image.DateTime", latest_date_time)
-                    )
-            except RuntimeError:
-                # 「RuntimeError: Directory Canon with 13312 entries considered invalid; not read.」というエラーが出ることがある。
-                pass
+            with pyexiv2.Image(f"{pictures_dir}/{file}", encoding="CP932") as img:
+                latest_date_time = max(
+                    latest_date_time, img.read_exif().get("Exif.Image.DateTime", latest_date_time)
+                )
     latest_date = re.sub(" .+", "", latest_date_time).replace(":", "_")
     for file in glob.iglob("*/*.JPG", root_dir=dcim_dir):
         dir_name = os.path.dirname(file)
         basename = os.path.basename(file)
         if dir_name >= latest_date:
-            pyexiv2.set_log_level(4)
             with pyexiv2.Image(f"{dcim_dir}/{file}") as img:
                 rating = int(img.read_xmp()["Xmp.xmp.Rating"]) if "Xmp.xmp.Rating" in img.read_xmp() else -1
                 if rating >= 4:
