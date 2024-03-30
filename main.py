@@ -25,7 +25,7 @@ if __name__ == "__main__":
             try:
                 with pyexiv2.Image(f"{pictures_dir}/{file}", encoding="CP932") as img:
                     latest_date_time = max(
-                        latest_date_time, img.read_exif()["Exif.Image.DateTime"]
+                        latest_date_time, img.read_exif().get("Exif.Image.DateTime", latest_date_time)
                     )
             except RuntimeError:
                 # 「RuntimeError: Directory Canon with 13312 entries considered invalid; not read.」というエラーが出ることがある。
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         basename = os.path.basename(file)
         if dir_name >= latest_date:
             with pyexiv2.Image(f"{dcim_dir}/{file}") as img:
-                rating = int(img.read_xmp()["Xmp.xmp.Rating"])
+                rating = int(img.read_xmp()["Xmp.xmp.Rating"]) if "Xmp.xmp.Rating" in img.read_xmp() else -1
                 if rating >= 4:
                     date_time = img.read_exif()["Exif.Image.DateTime"]
                     if date_time > latest_date_time:
