@@ -1,4 +1,5 @@
-"""お気に入りにマークした写真を壁紙フォルダーにコピー """
+"""お気に入りにマークした写真を壁紙フォルダーにコピー"""
+
 import datetime
 import glob
 import os
@@ -28,7 +29,8 @@ def main():
         if latest_timestamp - timestamp < datetime.timedelta(hours=1):
             with pyexiv2.Image(f"{PICTURES_DIR}/{file}", encoding="CP932") as img:
                 latest_date_time = max(
-                    latest_date_time, img.read_exif().get("Exif.Image.DateTime", latest_date_time)
+                    latest_date_time,
+                    img.read_exif().get("Exif.Image.DateTime", latest_date_time),
                 )
     latest_date = re.sub(" .+", "", latest_date_time).replace(":", "_")
     for file in glob.iglob("*/*.JPG", root_dir=DCIM_DIR):
@@ -36,7 +38,11 @@ def main():
         basename = os.path.basename(file)
         if dir_name >= latest_date:
             with pyexiv2.Image(f"{DCIM_DIR}/{file}", encoding="CP932") as img:
-                rating = int(img.read_xmp()["Xmp.xmp.Rating"]) if "Xmp.xmp.Rating" in img.read_xmp() else -1
+                rating = (
+                    int(img.read_xmp()["Xmp.xmp.Rating"])
+                    if "Xmp.xmp.Rating" in img.read_xmp()
+                    else -1
+                )
                 if rating >= 4:
                     date_time = img.read_exif()["Exif.Image.DateTime"]
                     if date_time > latest_date_time:
