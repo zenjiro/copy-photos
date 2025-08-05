@@ -4,5 +4,23 @@ requires-python = ">=3.13"
 
 [[package]]
 name = "photos"
-version = "0.1.0"
+version = "0.2.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "pyexiv2" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "pyexiv2", specifier = ">=2.15.4" }]
+
+[[package]]
+name = "pyexiv2"
+version = "2.15.4"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/20/c812d6fc78d8e265f6741242fabde5933cbca6d425d64e79121ce18f723b/pyexiv2-2.15.4-cp313-none-macosx_13_0_x86_64.whl", hash = "sha256:4304308b3390ec6393486d04b1b73b029e3c2aa975790341cffb7d22c8574313", size = 1489106, upload-time = "2025-05-09T11:09:03.664Z" },
+    { url = "https://files.pythonhosted.org/packages/d8/e6/640c41cf89e818078c90511027e65df696198e0474e313f6de06974de747/pyexiv2-2.15.4-cp313-none-macosx_14_0_arm64.whl", hash = "sha256:418f5c17992235c0abb044512ea6438503fb2b939cfd9b8f8487084197f46060", size = 1294829, upload-time = "2025-05-09T11:09:06.738Z" },
+    { url = "https://files.pythonhosted.org/packages/54/d3/f453cb15e216d2c02f12bcf6d24d45fd913a5035add2bdf020a0948578e8/pyexiv2-2.15.4-cp313-none-manylinux2014_aarch64.whl", hash = "sha256:2caad49c14a9880674b8de2d19bbee15982f70237bb5edeb4369ea14a2d2e11c", size = 1483653, upload-time = "2025-05-09T11:09:09.804Z" },
+    { url = "https://files.pythonhosted.org/packages/39/7b/a35cae172be1935c923b74cc588e4cd82a8d65732b647f216ef90cc8109e/pyexiv2-2.15.4-cp313-none-manylinux2014_x86_64.whl", hash = "sha256:056efb0d05725bacdb4a103dc28f0e879db4ba2ca9d6b9d7c0f53132d8480310", size = 1567923, upload-time = "2025-05-09T11:09:13.277Z" },
+    { url = "https://files.pythonhosted.org/packages/6d/9a/173abf779579e11388070c4f31259e0e6be945b6af7fadaf500e789ce5de/pyexiv2-2.15.4-cp313-none-win_amd64.whl", hash = "sha256:238971d2143e5e9af4c7a27ff3f593b220a707c798cda29e32edc6fae08c1af5", size = 1192809, upload-time = "2025-05-09T11:09:15.708Z" },
+]
